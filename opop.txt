@@ -1,0 +1,93 @@
+import pygame
+
+# Initialize Pygame
+pygame.init()
+
+# Set window size and create the window
+window_size = (800, 600)
+window = pygame.display.set_mode(window_size)
+
+# Set the window title
+pygame.display.set_caption("Football Tactics Tester")
+
+# Define the white color code
+white = (255, 255, 255)
+
+# Load player image and get player rect
+player_image = pygame.image.load("player.png")
+player_rect = player_image.get_rect()
+
+# Set initial player position
+player_rect.x = window_size[0] // 2
+player_rect.y = window_size[1] // 2
+
+# Set player speed
+player_speed = 5
+
+# Load football field image and get field rect
+field_image = pygame.image.load("football_field.png")
+field_rect = field_image.get_rect()
+
+# Display formation selection screen
+formation = None
+while formation is None:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            formation = "quit"
+            break
+
+    # Fill the window with white color
+    window.fill(white)
+
+    # Display formation options
+    font = pygame.font.Font(None, 36)
+    formations = [("1. 4-3-3", (300, 250)), 
+                  ("2. 4-4-2", (300, 300)), 
+                  ("3. 3-4-3", (300, 350))]
+    for text, pos in formations:
+        text = font.render(text, True, (0, 0, 0))
+        window.blit(text, pos)
+
+    # Update the window
+    pygame.display.update()
+
+    # Check for key presses to select formation
+    keys = pygame.key.get_pressed()
+    if keys[pygame.K_1]:
+        formation = "4-3-3"
+        break
+    if keys[pygame.K_2]:
+        formation = "4-4-2"
+        break
+    if keys[pygame.K_3]:
+        formation = "3-4-3"
+        break
+
+# Check if the user quit the game
+if formation == "quit":
+    pygame.quit()
+    exit()
+
+# Run the game loop
+running = True
+while running:
+    for event in pygame.event.get():
+        # Check if the user closes the window
+        if event.type == pygame.QUIT:
+            running = False
+
+    # Get the keys pressed by the user
+    keys = pygame.key.get_pressed()
+
+    # Move the player based on the keys pressed
+    if keys[pygame.K_UP]:
+        player_rect.y -= player_speed
+    if keys[pygame.K_DOWN]:
+        player_rect.y += player_speed
+    if keys[pygame.K_LEFT]:
+        player_rect.x -= player_speed
+    if keys[pygame.K_RIGHT]:
+        player_rect.x += player_speed
+
+    # Fill the window with white color
+    window.
